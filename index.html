@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>EnixShop</title>
+  <style>
+    body { font-family: Arial; background: #111; color: #fff; padding: 20px; }
+    .product { border: 1px solid #333; padding: 10px; margin: 10px; border-radius: 10px; background: #222; }
+    img { width: 100px; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 5px; background: #333; color: #fff; border: none; }
+    button { padding: 10px 20px; background: #0f0; border: none; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>🛒 EnixShop</h1>
+  <div id="products"></div>
+
+  <h2>✅ Confirmer une commande</h2>
+  <form id="confirmForm">
+    <label>Produit</label>
+    <input name="product" required />
+    <label>Méthode de paiement (PayPal / LTC / BTC)</label>
+    <input name="method" required />
+    <label>Preuve de paiement (TXID / Screenshot / Email PayPal)</label>
+    <textarea name="proof" required></textarea>
+    <label>Email de livraison</label>
+    <input name="email" required />
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <script>
+    async function loadProducts() {
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      const container = document.getElementById('products');
+      data.forEach(p => {
+        container.innerHTML += \`
+          <div class="product">
+            <img src="\${p.image}" />
+            <h3>\${p.name}</h3>
+            <p>\${p.price}</p>
+            <p><a href="\${p.link}" target="_blank">Voir sur Nebula</a></p>
+          </div>
+        \`;
+      });
+    }
+
+    loadProducts();
+
+    document.getElementById('confirmForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const body = {};
+      form.forEach((v, k) => body[k] = v);
+      const res = await fetch('/api/confirm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const result = await res.json();
+      alert(result.message);
+    });
+  </script>
+</body>
+</html>
