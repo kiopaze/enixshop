@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>EnixShop Admin</title>
+  <style>
+    body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; }
+    .entry { background: #222; margin: 10px 0; padding: 10px; border-radius: 10px; }
+    input { padding: 8px; margin-right: 10px; background: #333; color: #fff; border: none; }
+    button { padding: 8px 16px; background: #0f0; border: none; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Admin - EnixShop</h1>
+  <div id="auth">
+    <input type="password" id="pw" placeholder="Mot de passe admin">
+    <button onclick="auth()">Connexion</button>
+  </div>
+  <div id="orders" style="display:none"></div>
+
+  <script>
+    async function auth() {
+      const pw = document.getElementById('pw').value;
+      if (pw !== 'enixadmin') return alert('Mot de passe incorrect');
+      document.getElementById('auth').style.display = 'none';
+      document.getElementById('orders').style.display = 'block';
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      const container = document.getElementById('orders');
+      data.forEach(o => {
+        container.innerHTML += \`
+          <div class="entry">
+            <b>Produit :</b> \${o.product}<br>
+            <b>Méthode :</b> \${o.method}<br>
+            <b>Preuve :</b> \${o.proof}<br>
+            <b>Email :</b> \${o.email}<br>
+            <b>Date :</b> \${o.date}<br>
+          </div>
+        \`;
+      });
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>EnixShop Admin</title>
+  <style>
+    body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; }
+    .entry { background: #222; margin: 10px 0; padding: 10px; border-radius: 10px; }
+    input { padding: 8px; margin-right: 10px; background: #333; color: #fff; border: none; }
+    button { padding: 8px 16px; background: #0f0; border: none; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Admin - EnixShop</h1>
+  <div id="auth">
+    <input type="password" id="pw" placeholder="Mot de passe admin">
+    <button onclick="auth()">Connexion</button>
+  </div>
+  <div id="orders" style="display:none"></div>
+
+  <script>
+    async function auth() {
+      const pw = document.getElementById('pw').value;
+      if (pw !== 'enixadmin') return alert('Mot de passe incorrect');
+      document.getElementById('auth').style.display = 'none';
+      document.getElementById('orders').style.display = 'block';
+      const res = await fetch('/api/orders');
+      const data = await res.json();
+      const container = document.getElementById('orders');
+      data.forEach(o => {
+        container.innerHTML += \`
+          <div class="entry">
+            <b>Produit :</b> \${o.product}<br>
+            <b>Méthode :</b> \${o.method}<br>
+            <b>Preuve :</b> \${o.proof}<br>
+            <b>Email :</b> \${o.email}<br>
+            <b>Date :</b> \${o.date}<br>
+          </div>
+        \`;
+      });
+    }
+  </script>
+</body>
+</html>
